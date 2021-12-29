@@ -1,0 +1,57 @@
+{
+  "name": "escolalms/templates-pdf",
+  "description": "Escola Headless LMS Templates for pdf",
+  "type": "package",
+  "require": {
+    "php": "^7.4|^8.0",
+    "escolalms/core": "^1.2.2",
+    "escolalms/templates": "^0.2.1",
+    "laravel/framework": "^8.0"
+  },
+  "require-dev": {
+    "escolalms/auth": "^0.1.54",
+    "escolalms/courses": "^0.3.8",
+    "escolalms/settings": "^0.1.2",
+    "orchestra/testbench": "^5.0|^6.0",
+    "phpunit/phpunit": "^9.0"
+  },
+  "suggest": {
+    "escolalms/auth": "^0.1.54",
+    "escolalms/courses": "^0.3.8",
+    "escolalms/settings": "^0.1.2"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Paweł Chołaj",
+      "email": "pawel.cholaj@escola.pl"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "EscolaLms\\TemplatesPdf\\": "src",
+      "EscolaLms\\TemplatesPdf\\Tests\\": "tests",
+      "Database\\Factories\\EscolaLms\\TemplatesPdf\\Models\\": "database/factories",
+      "EscolaLms\\TemplatesPdf\\Database\\Seeders\\": "database/seeders"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "EscolaLms\\TemplatesPdf\\EscolaLmsTemplatesPdfServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "@php ./vendor/bin/testbench package:discover --ansi"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": false,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
