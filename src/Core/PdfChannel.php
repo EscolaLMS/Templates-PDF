@@ -22,35 +22,14 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
 {
     public static function send(EventWrapper $event, array $sections): bool
     {
-        if (!Arr::has($sections, self::sectionsRequired()) || !array_key_exists('contentHtml', $sections)) {
-            return false;
-        }
-
-        dd($event, $sections);
-
         return true;
     }
 
     public static function preview(User $user, array $sections): bool
     {
-        if (!Arr::has($sections, self::sectionsRequired()) || !array_key_exists('contentHtml', $sections)) {
-            Log::error('Missing pdf sections in preview', $sections);
-            return false;
-        }
-
-        dd($user, $sections);
-
         return true;
     }
 
-
-
-    private static function fixHtml(string $html): string
-    {
-        $config = HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-        return $purifier->purify($html);
-    }
 
     public static function sections(): Collection
     {
