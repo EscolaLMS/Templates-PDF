@@ -78,7 +78,6 @@ class PdfTests extends TestCase
     public function testCannotListAsGuest()
     {
         $response =  $this->getJson('/api/pdfs');
-
         $response->assertStatus(403);
     }
 
