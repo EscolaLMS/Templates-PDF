@@ -9,6 +9,7 @@ use EscolaLms\Templates\EscolaLmsTemplatesServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\PassportServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
+use EscolaLms\Courses\EscolaLmsCourseServiceProvider;
 
 class TestCase extends \EscolaLms\Core\Tests\TestCase
 {
@@ -26,6 +27,7 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
             ...parent::getPackageProviders($app),
             PassportServiceProvider::class,
             PermissionServiceProvider::class,
+            EscolaLmsCourseServiceProvider::class,
             EscolaLmsTemplatesServiceProvider::class,
             EscolaLmsTemplatesPdfServiceProvider::class,
         ];
