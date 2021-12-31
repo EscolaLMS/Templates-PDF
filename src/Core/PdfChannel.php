@@ -17,11 +17,21 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use EscolaLms\TemplatesPdf\Models\FabricPDF;
+
 
 class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannelContract
 {
     public static function send(EventWrapper $event, array $sections): bool
     {
+
+        FabricPDF::create([
+            'name' => 'London to Paris',
+            'user_id' => $event->user()->id,
+            'template_id' => $sections['template_id'],
+            'content' => $sections['content'],
+        ]);
+
         return true;
     }
 

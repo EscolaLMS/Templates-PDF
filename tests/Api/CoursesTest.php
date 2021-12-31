@@ -5,11 +5,7 @@ namespace EscolaLms\TemplatesPdf\Tests\Api;
 use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
-use EscolaLms\Courses\Events\EscolaLmsCourseAssignedTemplateEvent;
-use EscolaLms\Courses\Events\EscolaLmsCourseDeadlineSoonTemplateEvent;
 use EscolaLms\Courses\Events\EscolaLmsCourseFinishedTemplateEvent;
-use EscolaLms\Courses\Events\EscolaLmsCourseUnassignedTemplateEvent;
-use EscolaLms\Courses\Jobs\CheckForDeadlines;
 use EscolaLms\Courses\Models\Course;
 use EscolaLms\Courses\Models\Lesson;
 use EscolaLms\Courses\Models\Topic;
@@ -17,13 +13,10 @@ use EscolaLms\Courses\Models\User;
 use EscolaLms\Courses\Tests\ProgressConfigurable;
 use EscolaLms\Courses\ValueObjects\CourseProgressCollection;
 use EscolaLms\Templates\Listeners\TemplateEventListener;
-use EscolaLms\TemplatesPdf\Core\EmailMailable;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class CoursesTest extends TestCase
@@ -76,11 +69,11 @@ class CoursesTest extends TestCase
 
         $user = CoreUser::find($student->getKey());
 
-        // TODO: this event is not dispatched anywhere in Courses package, uncomment when it's fixed
-        //Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class);
-        //Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class, function (EscolaLmsCourseFinishedTemplateEvent $event) use ($user, $course) {
-        //    return $event->getCourse()->getKey() === $course->getKey() && $event->getUser()->getKey() === $user->getKey();
-        //});
+
+        Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class);
+        Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class, function (EscolaLmsCourseFinishedTemplateEvent $event) use ($user, $course) {
+            return $event->getCourse()->getKey() === $course->getKey() && $event->getUser()->getKey() === $user->getKey();
+        });
 
         $listener = app(TemplateEventListener::class);
         $listener->handle(new EscolaLmsCourseFinishedTemplateEvent($user, $course));

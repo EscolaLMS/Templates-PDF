@@ -5,7 +5,7 @@
   "require": {
     "php": "^7.4|^8.0",
     "escolalms/core": "^1.2.2",
-    "escolalms/templates": "^0.2.1",
+    "escolalms/templates": "^0.2.5",
     "laravel/framework": "^8.0"
   },
   "require-dev": {
@@ -31,7 +31,7 @@
     "psr-4": {
       "EscolaLms\\TemplatesPdf\\": "src",
       "EscolaLms\\TemplatesPdf\\Tests\\": "tests",
-      "Database\\Factories\\EscolaLms\\TemplatesPdf\\Models\\": "database/factories",
+      "EscolaLms\\TemplatesPdf\\Database\\Factories\\": "database/factories",
       "EscolaLms\\TemplatesPdf\\Database\\Seeders\\": "database/seeders"
     }
   },
@@ -50,7 +50,10 @@
   "config": {
     "optimize-autoloader": false,
     "preferred-install": "dist",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true
