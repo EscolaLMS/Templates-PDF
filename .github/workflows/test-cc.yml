@@ -25,6 +25,9 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: install git
+        run: apt-get install git -y
+
       - name: Instantiate package
         uses: actions/checkout@v2
 
