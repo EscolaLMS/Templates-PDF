@@ -5,7 +5,7 @@ namespace EscolaLms\TemplatesPdf\Models;
 use EscolaLms\Core\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use EscolaLms\TemplatesPdf\Database\Factories\FabricPDFFactory;
+use EscolaLms\TemplatesPdf\Database\Factories\FabricPdfFactory;
 use EscolaLms\Templates\Services\Contracts\TemplateServiceContract;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -48,7 +48,7 @@ class FabricPDF extends Model
 
     protected static function newFactory()
     {
-        return FabricPDFFactory::new();
+        return FabricPdfFactory::new();
     }
 
     public function user()

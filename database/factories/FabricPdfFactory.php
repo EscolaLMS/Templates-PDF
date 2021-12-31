@@ -7,7 +7,7 @@ use EscolaLms\Templates\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use EscolaLms\Auth\Models\User;
 
-class FabricPDFFactory extends Factory
+class FabricPdfFactory extends Factory
 {
     protected $model = FabricPDF::class;
 
