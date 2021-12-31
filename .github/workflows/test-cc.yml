@@ -45,3 +45,16 @@ jobs:
 
       - name: Code Coverage upload
         uses: codecov/codecov-action@v1
+
+      - name: Setup Code Climate test-reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+
+      - name: Convert
+        run: ./cc-test-reporter format-coverage coverage.xml -t clover -o codeclimate.0.json
+
+      - name: Upload
+        run: ./cc-test-reporter upload-coverage -i codeclimate.0.json
+        env:
+          CC_TEST_REPORTER_ID: 8b7a7f50b63c30b144408cabcd84e7239524dcf765dd2cff09564aedfdcda85e
