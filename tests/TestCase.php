@@ -12,12 +12,9 @@ use EscolaLms\Settings\EscolaLmsSettingsServiceProvider;
 use EscolaLms\Templates\EscolaLmsTemplatesServiceProvider;
 use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
 use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
-use EscolaLms\TemplatesPdf\Services\Contracts\MjmlServiceContract;
-use EscolaLms\TemplatesPdf\Services\MjmlService;
+
 use Laravel\Passport\Passport;
 use Laravel\Passport\PassportServiceProvider;
-use Mockery;
-use Mockery\MockInterface;
 use Spatie\Permission\PermissionServiceProvider;
 
 class TestCase extends CoreTestCase
@@ -60,6 +57,5 @@ class TestCase extends CoreTestCase
     {
         $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('passport.client_uuids', true);
-        // Add api keys to local phpunit.xml / testbench.yaml; use github repository secrets in github actions
     }
 }
