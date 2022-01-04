@@ -18,7 +18,6 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
     public static function send(EventWrapper $event, array $sections): bool
     {
         FabricPDF::create([
-            'name' => 'London to Paris',
             'user_id' => $event->user()->id,
             'template_id' => $sections['template_id'],
             'content' => $sections['content'],
