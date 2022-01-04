@@ -2,10 +2,10 @@
 
 namespace EscolaLms\TemplatesPdf\Tests\Api;
 
+use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use EscolaLms\Core\Tests\CreatesUsers;
 
 class PdfTests extends TestCase
 {
@@ -21,7 +21,7 @@ class PdfTests extends TestCase
     }
 
 
-    public function testCanReadExisting()
+    public function testCanReadExisting(): void
     {
         $pdf = FabricPDF::factory()->createOne(
             [
@@ -51,7 +51,7 @@ class PdfTests extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testListExisting()
+    public function testListExisting(): void
     {
         $pdf = FabricPDF::factory()->createOne(
             [
@@ -75,7 +75,7 @@ class PdfTests extends TestCase
         $this->assertEquals($pdf->id, $seek->id);
     }
 
-    public function testCannotListAsGuest()
+    public function testCannotListAsGuest(): void
     {
         $response =  $this->getJson('/api/pdfs');
 
@@ -83,24 +83,10 @@ class PdfTests extends TestCase
     }
 
 
-    public function testCannotFindMissing()
+    public function testCannotFindMissing(): void
     {
         $response = $this->actingAs($this->user2)
             ->getJson('/api/pdfs/' . 9999999);
         $response->assertNotFound();
     }
-
-    /*
-    public function testAdminCanReadExistingById()
-    {
-        $this->authenticateAsAdmin();
-
-        $page = Page::factory()->createOne();
-
-        $response = $this->actingAs($this->user, 'api')->getJson('/api/admin/pages/' . $page->getKey());
-        $response->assertOk();
-        $response->assertJsonFragment(collect($page->getAttributes())->except('id', 'slug')->toArray());
-    }
-
-    */
 }

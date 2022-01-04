@@ -12,7 +12,6 @@ use EscolaLms\Courses\Models\Topic;
 use EscolaLms\Courses\Models\User;
 use EscolaLms\Courses\Tests\ProgressConfigurable;
 use EscolaLms\Courses\ValueObjects\CourseProgressCollection;
-use EscolaLms\Templates\Facades\Template;
 use EscolaLms\Templates\Listeners\TemplateEventListener;
 use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
 use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
@@ -41,14 +40,13 @@ class CoursesTest extends TestCase
         $this->seed(TemplatesPdfSeeder::class);
     }
 
-    public function testUserFinishedCourseNotification()
+    public function testUserFinishedCourseNotification(): void
     {
         Notification::fake();
         Event::fake([
             EscolaLmsCourseFinishedTemplateEvent::class,
             EscolaLmsPdfCreatedEvent::class,
         ]);
-        //Template::fake();
 
         $course = Course::factory()->create(['active' => true]);
         $lesson = Lesson::factory([
@@ -90,8 +88,6 @@ class CoursesTest extends TestCase
         );
         $listener = app(TemplateEventListener::class);
         $listener->handle(new EscolaLmsCourseFinishedTemplateEvent($user, $course));
-
-        //Template::assertEventHandled(EscolaLmsCourseFinishedTemplateEvent::class);
 
         Event::assertDispatched(EscolaLmsPdfCreatedEvent::class);
     }

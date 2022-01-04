@@ -6,8 +6,6 @@ use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\Templates\Facades\Template;
 use EscolaLms\Templates\Repository\Contracts\TemplateRepositoryContract;
-use EscolaLms\TemplatesPdf\Core\EmailChannel;
-use EscolaLms\TemplatesPdf\Core\EmailMailable;
 use EscolaLms\TemplatesPdf\Core\PdfChannel;
 use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
 use EscolaLms\TemplatesPdf\Tests\Mocks\TestEvent;
@@ -16,7 +14,6 @@ use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class PdfChannelTest extends TestCase
