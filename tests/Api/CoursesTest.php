@@ -12,11 +12,16 @@ use EscolaLms\Courses\Models\Topic;
 use EscolaLms\Courses\Models\User;
 use EscolaLms\Courses\Tests\ProgressConfigurable;
 use EscolaLms\Courses\ValueObjects\CourseProgressCollection;
+use EscolaLms\Templates\Facades\Template;
 use EscolaLms\Templates\Listeners\TemplateEventListener;
+use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
+use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class CoursesTest extends TestCase
@@ -33,14 +38,17 @@ class CoursesTest extends TestCase
         if (!class_exists(\EscolaLms\Scorm\EscolaLmsScormServiceProvider::class)) {
             $this->markTestSkipped('Scorm package not installed');
         }
+        $this->seed(TemplatesPdfSeeder::class);
     }
-
-
 
     public function testUserFinishedCourseNotification()
     {
         Notification::fake();
-        Event::fake();
+        Event::fake([
+            EscolaLmsCourseFinishedTemplateEvent::class,
+            EscolaLmsPdfCreatedEvent::class,
+        ]);
+        //Template::fake();
 
         $course = Course::factory()->create(['active' => true]);
         $lesson = Lesson::factory([
@@ -69,21 +77,22 @@ class CoursesTest extends TestCase
 
         $user = CoreUser::find($student->getKey());
 
-
         Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class);
         Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class, function (EscolaLmsCourseFinishedTemplateEvent $event) use ($user, $course) {
             return $event->getCourse()->getKey() === $course->getKey() && $event->getUser()->getKey() === $user->getKey();
         });
 
+        Event::assertNotDispatched(EscolaLmsPdfCreatedEvent::class);
+
+        Log::listen(
+            fn (MessageLogged $message) =>
+            $this->assertNotEquals('error', $message->level, $message->message)
+        );
         $listener = app(TemplateEventListener::class);
         $listener->handle(new EscolaLmsCourseFinishedTemplateEvent($user, $course));
 
-        // TODO add test here 
+        //Template::assertEventHandled(EscolaLmsCourseFinishedTemplateEvent::class);
 
-        if (!Event::hasDispatched(EscolaLmsCourseFinishedTemplateEvent::class)) {
-            $this->markTestIncomplete(
-                'EscolaLmsCourseFinishedTemplateEvent is not dispatched in Courses'
-            );
-        }
+        Event::assertDispatched(EscolaLmsPdfCreatedEvent::class);
     }
 }
