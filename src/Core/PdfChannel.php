@@ -10,21 +10,13 @@ use EscolaLms\Templates\Enums\TemplateSectionTypeEnum;
 use EscolaLms\Templates\Events\EventWrapper;
 use EscolaLms\Templates\Models\Template;
 use EscolaLms\Templates\Models\TemplateSection;
-use HTMLPurifier_Config;
-use HTMLPurifier;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
-
+use Illuminate\Support\Collection;
 
 class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannelContract
 {
     public static function send(EventWrapper $event, array $sections): bool
     {
-
         FabricPDF::create([
             'name' => 'London to Paris',
             'user_id' => $event->user()->id,
@@ -39,7 +31,6 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
     {
         return true;
     }
-
 
     public static function sections(): Collection
     {
