@@ -7,7 +7,7 @@ use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PdfTests extends TestCase
+class PdfTest extends TestCase
 {
     use DatabaseTransactions;
     use CreatesUsers;
