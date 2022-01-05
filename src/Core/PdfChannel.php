@@ -20,6 +20,7 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
         FabricPDF::create([
             'user_id' => $event->user()->id,
             'template_id' => $sections['template_id'],
+            'title' => $sections['title'],
             'content' => $sections['content'],
         ]);
 
@@ -34,6 +35,7 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
     public static function sections(): Collection
     {
         return new Collection([
+            new TemplateSectionSchema('title', TemplateSectionTypeEnum::SECTION_TEXT(), true),
             new TemplateSectionSchema('content', TemplateSectionTypeEnum::SECTION_FABRIC(), true),
         ]);
     }

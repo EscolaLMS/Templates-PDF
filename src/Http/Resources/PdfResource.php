@@ -18,6 +18,7 @@ class PdfResource extends JsonResource
             'id' => $this->id,
             'template' => $this->template,
             'path' => $this->path,
+            'title' => $this->title,
             'content' => $this->content ? json_decode($this->content) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

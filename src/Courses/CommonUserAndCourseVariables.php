@@ -39,13 +39,19 @@ abstract class CommonUserAndCourseVariables extends PdfVariables
 
     public static function requiredVariablesInSection(string $sectionKey): array
     {
-        if ($sectionKey === 'content') {
-            [
-                self::VAR_USER_NAME,
-                self::VAR_COURSE_TITLE,
-            ];
+        switch ($sectionKey) {
+            case 'title':
+                return [
+                    self::VAR_COURSE_TITLE,
+                ];
+            case 'content':
+                return [
+                    self::VAR_USER_NAME,
+                    self::VAR_COURSE_TITLE,
+                ];
+            default:
+                return [];
         }
-        return [];
     }
 
     public static function assignableClass(): ?string
