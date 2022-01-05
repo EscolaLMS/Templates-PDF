@@ -21,6 +21,11 @@ use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
  *          type="integer",
  *      ),
  *      @OA\Property(
+ *          property="title",
+ *          description="title",
+ *          type="string"
+ *      )
+ *      @OA\Property(
  *          property="content",
  *          description="fabric.js serialized content",
  *          type="object"
@@ -40,7 +45,7 @@ class FabricPDF extends Model
 
     protected $casts = [
         'id' => 'integer',
-        'content' => 'array'
+        'content' => 'array',
     ];
 
     protected $guarded = [

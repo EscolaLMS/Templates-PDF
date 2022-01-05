@@ -6,8 +6,6 @@ use EscolaLms\Core\Models\User;
 use EscolaLms\Templates\Contracts\TemplateVariableContract;
 use EscolaLms\Templates\Core\AbstractTemplateVariableClass;
 use EscolaLms\Templates\Events\EventWrapper;
-use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
-use Illuminate\Support\Str;
 
 abstract class PdfVariables extends AbstractTemplateVariableClass implements TemplateVariableContract
 {

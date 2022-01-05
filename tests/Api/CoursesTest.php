@@ -13,8 +13,12 @@ use EscolaLms\Courses\Models\User;
 use EscolaLms\Courses\Tests\ProgressConfigurable;
 use EscolaLms\Courses\ValueObjects\CourseProgressCollection;
 use EscolaLms\Templates\Listeners\TemplateEventListener;
+use EscolaLms\Templates\Models\Template;
+use EscolaLms\TemplatesPdf\Core\PdfChannel;
+use EscolaLms\TemplatesPdf\Courses\UserFinishedCourseVariables;
 use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
 use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
+use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -22,6 +26,7 @@ use Illuminate\Log\Events\MessageLogged;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Maatwebsite\Excel\Concerns\ToArray;
 
 class CoursesTest extends TestCase
 {
@@ -90,5 +95,12 @@ class CoursesTest extends TestCase
         $listener->handle(new EscolaLmsCourseFinishedTemplateEvent($user, $course));
 
         Event::assertDispatched(EscolaLmsPdfCreatedEvent::class);
+
+        $template = Template::where('event', EscolaLmsCourseFinishedTemplateEvent::class)->where('channel', PdfChannel::class)->where('default', true)->first();
+        $pdf = FabricPDF::where('user_id', $user->getKey())->latest()->first();
+
+        $section = $template->sections->where('key', 'title')->first();
+
+        $this->assertEquals(str_replace(UserFinishedCourseVariables::VAR_COURSE_TITLE, $course->title, $section->content), $pdf->title);
     }
 }
