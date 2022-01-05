@@ -12,14 +12,12 @@ class PdfTest extends TestCase
     use DatabaseTransactions;
     use CreatesUsers;
 
-
     public function setUp(): void
     {
         parent::setUp();
         $this->user =  $this->makeStudent();
         $this->user2 =  $this->makeStudent();
     }
-
 
     public function testCanReadExisting(): void
     {
@@ -61,6 +59,30 @@ class PdfTest extends TestCase
 
         $response =  $this->actingAs($this->user)
             ->getJson('/api/pdfs');
+
+        $response->assertOk();
+
+        $seek = false;
+
+        foreach ($response->getData()->data as $item) {
+            if ($item->id == $pdf->id) {
+                $seek = $pdf;
+            }
+        }
+
+        $this->assertEquals($pdf->id, $seek->id);
+    }
+
+    public function testListAdmin(): void
+    {
+        $pdf = FabricPDF::factory()->createOne(
+            [
+                'user_id' => $this->user->id
+            ]
+        );
+
+        $admin = $this->makeAdmin();
+        $response =  $this->actingAs($admin, 'api')->getJson('/api/admin/pdfs');
 
         $response->assertOk();
 

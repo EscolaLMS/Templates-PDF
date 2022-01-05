@@ -4,6 +4,7 @@ namespace EscolaLms\TemplatesPdf\Http\Controllers;
 
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
 use EscolaLms\TemplatesPdf\Http\Controllers\Swagger\FabricPdfControllerSwagger;
+use EscolaLms\TemplatesPdf\Http\Requests\PdfListingAdminRequest;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfListingRequest;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfReadRequest;
 use EscolaLms\TemplatesPdf\Http\Resources\PdfListResource;
@@ -26,5 +27,15 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
             return $this->sendError(sprintf("pdf with id '%s' not yours", $id), 403);
         }
         return $this->sendResponseForResource(PdfResource::make($pdf), "pdf fetched successfully");
+    }
+
+    public function admin(PdfListingAdminRequest $request): JsonResponse
+    {
+        if ($request->has('user_id')) {
+            $pdfs = FabricPDF::where('user_id', $request->input('user_id'))->paginate();
+        } else {
+            $pdfs = FabricPDF::paginate();
+        }
+        return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
     }
 }

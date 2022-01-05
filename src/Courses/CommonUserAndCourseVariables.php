@@ -24,7 +24,7 @@ abstract class CommonUserAndCourseVariables extends PdfVariables
     public static function variablesFromEvent(EventWrapper $event): array
     {
         return array_merge(parent::variablesFromEvent($event), [
-            self::VAR_USER_NAME    => $event->getUser()->name,
+            self::VAR_USER_NAME    => $event->user()->name,
             self::VAR_COURSE_TITLE => $event->getCourse()->title,
         ]);
     }
