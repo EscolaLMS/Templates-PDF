@@ -23,18 +23,18 @@ use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
  *      @OA\Property(
  *          property="title",
  *          description="title",
- *          type="string"
- *      )
+ *          type="string",
+ *      ),
  *      @OA\Property(
  *          property="content",
  *          description="fabric.js serialized content",
- *          type="object"
+ *          type="object",
  *      ),
  *      @OA\Property(
  *          property="path",
  *          description="path to rendered PDF binary file",
- *          type="string"
- *      )
+ *          type="string",
+ *      ),
  * )
  */
 class FabricPDF extends Model
