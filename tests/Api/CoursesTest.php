@@ -5,6 +5,7 @@ namespace EscolaLms\TemplatesPdf\Tests\Api;
 use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
+use EscolaLms\Courses\Enum\CourseStatusEnum;
 use EscolaLms\Courses\Events\EscolaLmsCourseFinishedTemplateEvent;
 use EscolaLms\Courses\Models\Course;
 use EscolaLms\Courses\Models\Lesson;
@@ -53,7 +54,7 @@ class CoursesTest extends TestCase
             EscolaLmsPdfCreatedEvent::class,
         ]);
 
-        $course = Course::factory()->create(['active' => true]);
+        $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED]);
         $lesson = Lesson::factory([
             'course_id' => $course->getKey()
         ])->create();
