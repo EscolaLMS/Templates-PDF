@@ -2,7 +2,7 @@
 
 namespace EscolaLms\TemplatesPdf\Providers;
 
-use EscolaLms\Courses\Events\EscolaLmsCourseFinishedTemplateEvent;
+use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Templates\Facades\Template;
 use EscolaLms\TemplatesPdf\Core\PdfChannel;
 use EscolaLms\TemplatesPdf\Courses\UserFinishedCourseVariables;
@@ -12,6 +12,6 @@ class CourseTemplatesServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Template::register(EscolaLmsCourseFinishedTemplateEvent::class, PdfChannel::class, UserFinishedCourseVariables::class);
+        Template::register(CourseFinished::class, PdfChannel::class, UserFinishedCourseVariables::class);
     }
 }

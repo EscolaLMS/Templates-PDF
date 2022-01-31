@@ -7,7 +7,7 @@ use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EscolaLmsPdfCreatedEvent
+class PdfCreated
 {
     use Dispatchable, SerializesModels;
 

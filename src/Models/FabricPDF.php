@@ -10,7 +10,7 @@ use EscolaLms\Templates\Services\Contracts\TemplateServiceContract;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use EscolaLms\Templates\Models\Template;
-use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
+use EscolaLms\TemplatesPdf\Events\PdfCreated;
 
 /**
  * @OA\Schema(
@@ -70,7 +70,7 @@ class FabricPDF extends Model
     protected static function booted()
     {
         self::created(function (FabricPDF $pdf) {
-            event(new EscolaLmsPdfCreatedEvent($pdf->user, $pdf));
+            event(new PdfCreated($pdf->user, $pdf));
         });
     }
 }
