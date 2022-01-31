@@ -5,7 +5,7 @@ namespace EscolaLms\TemplatesPdf\Database\Seeders;
 use EscolaLms\Core\Enums\UserRole;
 use EscolaLms\Courses\Database\Seeders\ProgressSeeder;
 use EscolaLms\Courses\Enum\ProgressStatus;
-use EscolaLms\Courses\Events\EscolaLmsCourseFinishedTemplateEvent;
+use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Courses\Models\User;
 use EscolaLms\Courses\Repositories\Contracts\CourseProgressRepositoryContract;
 use EscolaLms\Courses\Services\Contracts\ProgressServiceContract;
@@ -34,7 +34,7 @@ class DemoPdfsSeeder extends Seeder
             return;
         }
 
-        Event::fake(EscolaLmsCourseFinishedTemplateEvent::class);
+        Event::fake(CourseFinished::class);
 
         $students = $this->getStudents();
 
@@ -48,7 +48,7 @@ class DemoPdfsSeeder extends Seeder
 
                 $this->ensureCourseIsFinished($courseProgress);
 
-                Template::handleEvent(new EventWrapper(new EscolaLmsCourseFinishedTemplateEvent($student, $courseProgress->getCourse())));
+                Template::handleEvent(new EventWrapper(new CourseFinished($student, $courseProgress->getCourse())));
             }
         }
     }

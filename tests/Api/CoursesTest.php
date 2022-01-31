@@ -6,7 +6,7 @@ use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\Courses\Enum\CourseStatusEnum;
-use EscolaLms\Courses\Events\EscolaLmsCourseFinishedTemplateEvent;
+use EscolaLms\Courses\Events\CourseFinished;
 use EscolaLms\Courses\Models\Course;
 use EscolaLms\Courses\Models\Lesson;
 use EscolaLms\Courses\Models\Topic;
@@ -18,7 +18,7 @@ use EscolaLms\Templates\Models\Template;
 use EscolaLms\TemplatesPdf\Core\PdfChannel;
 use EscolaLms\TemplatesPdf\Courses\UserFinishedCourseVariables;
 use EscolaLms\TemplatesPdf\Database\Seeders\TemplatesPdfSeeder;
-use EscolaLms\TemplatesPdf\Events\EscolaLmsPdfCreatedEvent;
+use EscolaLms\TemplatesPdf\Events\PdfCreated;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -50,8 +50,8 @@ class CoursesTest extends TestCase
     {
         Notification::fake();
         Event::fake([
-            EscolaLmsCourseFinishedTemplateEvent::class,
-            EscolaLmsPdfCreatedEvent::class,
+            CourseFinished::class,
+            PdfCreated::class,
         ]);
 
         $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED]);
@@ -81,23 +81,23 @@ class CoursesTest extends TestCase
 
         $user = CoreUser::find($student->getKey());
 
-        Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class);
-        Event::assertDispatched(EscolaLmsCourseFinishedTemplateEvent::class, function (EscolaLmsCourseFinishedTemplateEvent $event) use ($user, $course) {
+        Event::assertDispatched(CourseFinished::class);
+        Event::assertDispatched(CourseFinished::class, function (CourseFinished $event) use ($user, $course) {
             return $event->getCourse()->getKey() === $course->getKey() && $event->getUser()->getKey() === $user->getKey();
         });
 
-        Event::assertNotDispatched(EscolaLmsPdfCreatedEvent::class);
+        Event::assertNotDispatched(PdfCreated::class);
 
         Log::listen(
             fn (MessageLogged $message) =>
             $this->assertNotEquals('error', $message->level, $message->message)
         );
         $listener = app(TemplateEventListener::class);
-        $listener->handle(new EscolaLmsCourseFinishedTemplateEvent($user, $course));
+        $listener->handle(new CourseFinished($user, $course));
 
-        Event::assertDispatched(EscolaLmsPdfCreatedEvent::class);
+        Event::assertDispatched(PdfCreated::class);
 
-        $template = Template::where('event', EscolaLmsCourseFinishedTemplateEvent::class)->where('channel', PdfChannel::class)->where('default', true)->first();
+        $template = Template::where('event', CourseFinished::class)->where('channel', PdfChannel::class)->where('default', true)->first();
         $pdf = FabricPDF::where('user_id', $user->getKey())->latest()->first();
 
         $section = $template->sections->where('key', 'title')->first();
