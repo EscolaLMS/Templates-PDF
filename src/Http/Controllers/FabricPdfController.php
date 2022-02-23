@@ -32,7 +32,9 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
     public function admin(PdfListingAdminRequest $request): JsonResponse
     {
         if ($request->has('user_id')) {
-            $pdfs = FabricPDF::where('user_id', $request->input('user_id'))->paginate();
+            $pdfs = FabricPDF::where('user_id', $request->input('user_id'))->get();
+        } else if ($request->has('template_id')) {
+            $pdfs = FabricPDF::where('template_id', $request->input('template_id'))->get();
         } else {
             $pdfs = FabricPDF::paginate();
         }
