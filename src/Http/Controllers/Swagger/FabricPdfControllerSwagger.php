@@ -4,6 +4,7 @@ namespace EscolaLms\TemplatesPdf\Http\Controllers\Swagger;
 
 use EscolaLms\TemplatesPdf\Http\Requests\PdfListingRequest;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfReadRequest;
+use EscolaLms\TemplatesPdf\Http\Requests\PdfListingAdminRequest;
 
 use Illuminate\Http\JsonResponse;
 
@@ -108,4 +109,55 @@ interface FabricPdfControllerSwagger
      * )
      */
     public function show(PdfReadRequest $request, int $id): JsonResponse;
+
+    /**
+     * @OA\Get(
+     *      path="/api/admin/pdfs",
+     *      summary="Display the specified Fabric.js PDF",
+     *      tags={"Admin Template PDFs"},
+     *      description="Get Fabric.js PDF, IF user_id or template_id is provided all records are returned, otherwise list is paginated ",
+     *      security={
+     *         {"passport": {}},
+     *      },
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          description="either user_id",
+     *          @OA\Schema(
+     *             type="integer",
+     *         ),
+     *          in="query"
+     *      ),
+     *      @OA\Parameter(
+     *          name="template_id",
+     *          description="or user_id",
+     *          @OA\Schema(
+     *             type="integer",
+     *         ),
+     *          in="query"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json"
+     *          ),
+     *          @OA\Schema(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  ref="#/components/schemas/FabricPDF"
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function admin(PdfListingAdminRequest $request): JsonResponse;
 }
