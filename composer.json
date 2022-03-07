@@ -6,7 +6,7 @@
     "php": "^7.4|^8.0",
     "escolalms/core": "^1.2.2",
     "escolalms/templates": "^0.2.5",
-    "laravel/framework": "^8.0"
+    "laravel/framework": "^8|^9"
   },
   "require-dev": {
     "escolalms/auth": "^0.1.54",
