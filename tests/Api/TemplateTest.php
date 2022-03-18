@@ -8,6 +8,7 @@ use EscolaLms\Templates\Database\Seeders\PermissionTableSeeder;
 use EscolaLms\Templates\Events\ManuallyTriggeredEvent;
 use EscolaLms\Templates\Listeners\TemplateEventListener;
 use EscolaLms\Templates\Models\Template;
+use EscolaLms\Templates\Models\TemplateSection;
 use EscolaLms\TemplatesPdf\Core\PdfChannel;
 use EscolaLms\TemplatesPdf\Core\UserVariables;
 use EscolaLms\TemplatesPdf\Events\PdfCreated;
@@ -34,6 +35,25 @@ class TemplateTest extends TestCase
             PdfCreated::class,
         ]);
 
+        $template = Template::factory()->create([
+            'name' => 'Pdf',
+            'channel' => PdfChannel::class,
+            'event' => ManuallyTriggeredEvent::class,
+            'default' => true,
+        ]);
+
+        $titleSection = TemplateSection::factory()->create([
+            'key' => 'title',
+            'content' => 'Pdf for @VarUserName',
+            'template_id' => $template->getKey()
+        ]);
+
+        $contentSection = TemplateSection::factory()->create([
+            'key' => 'content',
+            'content' => '{"version":"4.6.0","objects":[]}',
+            'template_id' => $template->getKey()
+        ]);
+
         $student = $this->makeStudent();
         $admin = $this->makeAdmin();
 
@@ -52,15 +72,8 @@ class TemplateTest extends TestCase
 
         Event::assertDispatched(PdfCreated::class);
 
-        $template = Template::where([
-            ['event', ManuallyTriggeredEvent::class],
-            ['channel', PdfChannel::class],
-            ['default', true]
-        ])->first();
-
         $pdf = FabricPDF::where('user_id', $student->getKey())->latest()->first();
 
-        $section = $template->sections->where('key', 'title')->first();
-        $this->assertEquals(str_replace(UserVariables::VAR_USER_NAME, $student->name, $section->content), $pdf->title);
+        $this->assertEquals(str_replace(UserVariables::VAR_USER_NAME, $student->name, $titleSection->content), $pdf->title);
     }
 }

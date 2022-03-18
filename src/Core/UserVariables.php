@@ -43,7 +43,7 @@ class UserVariables extends PdfVariables
     public static function defaultSectionsContent(): array
     {
         return [
-            'title' => Lang::get('Certificate for :user', ['user' => self::VAR_USER_NAME]),
+            'title' => Lang::get('Pdf for :user', ['user' => self::VAR_USER_NAME]),
             'content' => <<<JSON
             {"version":"4.6.0","objects":[{"type":"text","version":"4.6.0","left":269,"top":186,"width":248.58,"height":28.25,"fill":"#000000","fontFamily":"helvetica","fontWeight":"","fontSize":25,"text":"User: @VarUserName","styles":{}}]}
             JSON,
