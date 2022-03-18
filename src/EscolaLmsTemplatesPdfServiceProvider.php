@@ -3,6 +3,7 @@
 namespace EscolaLms\TemplatesPdf;
 
 use EscolaLms\TemplatesPdf\Providers\CourseTemplatesServiceProvider;
+use EscolaLms\TemplatesPdf\Providers\UserTemplateServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -21,6 +22,8 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
         if (class_exists(\EscolaLms\Courses\EscolaLmsCourseServiceProvider::class)) {
             $this->app->register(CourseTemplatesServiceProvider::class);
         }
+
+        $this->app->register(UserTemplateServiceProvider::class);
     }
 
     public function boot()
