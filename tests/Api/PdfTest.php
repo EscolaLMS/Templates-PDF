@@ -17,6 +17,7 @@ class PdfTest extends TestCase
         parent::setUp();
         $this->user =  $this->makeStudent();
         $this->user2 =  $this->makeStudent();
+        $this->admin =  $this->makeAdmin();
     }
 
     public function testCanReadExisting(): void
@@ -47,6 +48,20 @@ class PdfTest extends TestCase
             ->getJson('/api/pdfs/' . $pdf->id);
 
         $response->assertStatus(403);
+    }
+
+    public function testAdminCanReadAny(): void
+    {
+        $pdf = FabricPDF::factory()->createOne(
+            [
+                'user_id' => $this->user->id
+            ]
+        );
+
+        $response =  $this->actingAs($this->admin)
+            ->getJson('/api/pdfs/' . $pdf->id);
+
+        $response->assertOk();
     }
 
     public function testListExisting(): void
