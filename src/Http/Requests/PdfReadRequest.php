@@ -3,6 +3,8 @@
 namespace EscolaLms\TemplatesPdf\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use EscolaLms\TemplatesPdf\Models\FabricPDF;
 
 class PdfReadRequest extends FormRequest
 {
@@ -11,7 +13,10 @@ class PdfReadRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user();
+
+        $pdf = FabricPDF::findOrFail($this->route('id'));
+
+        return Gate::allows('read', $pdf);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace EscolaLms\TemplatesPdf\Http\Requests;
 
-use EscolaLms\Templates\Models\Template;
+use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PdfListingAdminRequest extends FormRequest
@@ -12,7 +12,7 @@ class PdfListingAdminRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && $this->user()->can('list', Template::class);
+        return $this->user()->can('list', FabricPDF::class);
     }
 
     /**
