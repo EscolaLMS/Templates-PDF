@@ -18,6 +18,7 @@ class PdfListResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'template' => $this->template,
+            'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
