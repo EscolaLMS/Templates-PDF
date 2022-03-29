@@ -4,6 +4,7 @@ namespace EscolaLms\TemplatesPdf;
 
 use EscolaLms\TemplatesPdf\Providers\CourseTemplatesServiceProvider;
 use EscolaLms\TemplatesPdf\Providers\UserTemplateServiceProvider;
+use EscolaLms\TemplatesPdf\AuthServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -17,6 +18,8 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->app->register(AuthServiceProvider::class);
+
         $this->mergeConfigFrom(__DIR__ . '/config.php', self::CONFIG_KEY);
 
         if (class_exists(\EscolaLms\Courses\EscolaLmsCourseServiceProvider::class)) {
