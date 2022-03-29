@@ -5,6 +5,8 @@ namespace EscolaLms\TemplatesPdf\Tests;
 use EscolaLms\Core\Models\User;
 use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
 use EscolaLms\Templates\Database\Seeders\PermissionTableSeeder as TemplatesPermissionTableSeeder;
+use EscolaLms\TemplatesPdf\Database\Seeders\PermissionTableSeeder as TemplatesPdfPermissionTableSeeder;
+
 use EscolaLms\Templates\EscolaLmsTemplatesServiceProvider;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\PassportServiceProvider;
@@ -19,6 +21,7 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
     {
         parent::setUp();
         $this->seed(TemplatesPermissionTableSeeder::class);
+        $this->seed(TemplatesPdfPermissionTableSeeder::class);
     }
 
     protected function getPackageProviders($app): array

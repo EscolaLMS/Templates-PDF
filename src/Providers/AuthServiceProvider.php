@@ -1,6 +1,6 @@
 <?php
 
-namespace EscolaLms\TemplatesPdf;
+namespace EscolaLms\TemplatesPdf\Providers;
 
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Policies\TemplatePdfPolicy;
