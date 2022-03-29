@@ -24,6 +24,7 @@ class PdfListingAdminRequest extends FormRequest
     {
         return [
             'user_id' => ['sometimes', 'integer'],
+            'template_id' => ['sometimes', 'integer'],
         ];
     }
 }
