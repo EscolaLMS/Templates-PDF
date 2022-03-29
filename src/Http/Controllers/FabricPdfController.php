@@ -23,9 +23,6 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
     public function show(PdfReadRequest $request, int $id): JsonResponse
     {
         $pdf = FabricPDF::findOrFail($id);
-        if ($pdf->user_id != auth()->user()->id) {
-            return $this->sendError(sprintf("pdf with id '%s' not yours", $id), 403);
-        }
         return $this->sendResponseForResource(PdfResource::make($pdf), "pdf fetched successfully");
     }
 
