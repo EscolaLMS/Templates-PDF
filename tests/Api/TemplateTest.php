@@ -58,22 +58,14 @@ class TemplateTest extends TestCase
         $admin = $this->makeAdmin();
 
         $this->response = $this->actingAs($admin, 'api')->postJson(
-            '/api/admin/events/trigger-manually',
+            '/api/admin/events/trigger-manually/' . $template->getKey(),
             ['users' => [$student->getKey()]]
         )->assertOk();
 
-        Event::assertDispatched(ManuallyTriggeredEvent::class, function (ManuallyTriggeredEvent $event) use ($student){
-            $this->assertEquals($student->getKey(), $event->getUser()->getKey());
-            return true;
-        });
-
         $listener = app(TemplateEventListener::class);
         $listener->handle(new ManuallyTriggeredEvent($student));
-
         Event::assertDispatched(PdfCreated::class);
-
         $pdf = FabricPDF::where('user_id', $student->getKey())->latest()->first();
-
         $this->assertEquals(str_replace(UserVariables::VAR_USER_NAME, $student->name, $titleSection->content), $pdf->title);
     }
 }
