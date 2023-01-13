@@ -32,7 +32,7 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
         return $this->sendResponseForResource(PdfResource::make($pdf), "pdf fetched successfully");
     }
 
-    public function generate(int $id): BinaryFileResponse
+    public function generate(PdfReadRequest $request, int $id): BinaryFileResponse
     {
         $service = App::make(ReportBroServiceContract::class);
         return response()->download($service->generateFileFromRecord($id));
@@ -50,9 +50,9 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
         return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
     }
 
-    public function reportBro(Request $request): BinaryFileResponse
+    public function reportBro(Request $request): mixed
     {
         $service = App::make(ReportBroServiceContract::class);
-        return response()->download($service->passAll($request));
+        return $service->passAll($request);
     }
 }

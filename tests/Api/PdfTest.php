@@ -6,6 +6,7 @@ use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 
 class PdfTest extends TestCase
 {

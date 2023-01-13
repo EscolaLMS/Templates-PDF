@@ -5,8 +5,10 @@ namespace EscolaLms\TemplatesPdf\Http\Controllers\Swagger;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfListingRequest;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfReadRequest;
 use EscolaLms\TemplatesPdf\Http\Requests\PdfListingAdminRequest;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 interface FabricPdfControllerSwagger
 {
@@ -160,4 +162,59 @@ interface FabricPdfControllerSwagger
      * )
      */
     public function admin(PdfListingAdminRequest $request): JsonResponse;
+
+    /**
+     * @OA\Get(
+     *      path="/api/pdfs/generate/{id}",
+     *      summary="Generate Specific ReportBro PDF",
+     *      tags={"Template PDFs"},
+     *      description="Generate Specific ReportBro PDF",
+     *      security={
+     *         {"passport": {}},
+     *      },
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="id of Fabric.js/ReportBro PDF",
+     *          @OA\Schema(
+     *             type="integer",
+     *         ),
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/pdf "
+     *          )
+     *      )
+     * )
+     */
+    public function generate(PdfReadRequest $request, int $id): BinaryFileResponse;
+
+    /**
+     * @OA\Get(
+     *      path="/reportbro/report/run",
+     *      summary="Proxy for ReportBro server",
+     *      tags={"Template PDFs"},
+     *      description="Generate Specific ReportBro PDF",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="id of Fabric.js/ReportBro PDF",
+     *          @OA\Schema(
+     *             type="integer",
+     *         ),
+     *          required=true,
+     *          in="path"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/pdf "
+     *          )
+     *      )
+     * )
+     */
+    public function reportBro(Request $request): mixed;
 }
