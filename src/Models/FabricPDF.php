@@ -46,6 +46,7 @@ class FabricPDF extends Model
     protected $casts = [
         'id' => 'integer',
         'content' => 'array',
+        'vars' => 'array',
     ];
 
     protected $guarded = [

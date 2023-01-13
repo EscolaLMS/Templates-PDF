@@ -5,6 +5,8 @@ namespace EscolaLms\TemplatesPdf;
 use EscolaLms\TemplatesPdf\Providers\CourseTemplatesServiceProvider;
 use EscolaLms\TemplatesPdf\Providers\UserTemplateServiceProvider;
 use EscolaLms\TemplatesPdf\Providers\AuthServiceProvider;
+use EscolaLms\TemplatesPdf\Services\ReportBroService;
+use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -14,7 +16,9 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
 {
     const CONFIG_KEY = 'escola_templates_pdf';
 
-    public $singletons = [];
+    public $singletons = [
+        ReportBroServiceContract::class => ReportBroService::class
+    ];
 
     public function register()
     {

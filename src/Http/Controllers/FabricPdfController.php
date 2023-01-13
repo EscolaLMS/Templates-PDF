@@ -11,6 +11,12 @@ use EscolaLms\TemplatesPdf\Http\Resources\PdfListResource;
 use EscolaLms\TemplatesPdf\Http\Resources\PdfResource;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
+
 
 class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfControllerSwagger
 {
@@ -26,6 +32,12 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
         return $this->sendResponseForResource(PdfResource::make($pdf), "pdf fetched successfully");
     }
 
+    public function generate(int $id): BinaryFileResponse
+    {
+        $service = App::make(ReportBroServiceContract::class);
+        return response()->download($service->generateFileFromRecord($id));
+    }
+
     public function admin(PdfListingAdminRequest $request): JsonResponse
     {
         if ($request->has('user_id')) {
@@ -36,5 +48,11 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
             $pdfs = FabricPDF::paginate();
         }
         return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
+    }
+
+    public function reportBro(Request $request): BinaryFileResponse
+    {
+        $service = App::make(ReportBroServiceContract::class);
+        return response()->download($service->passAll($request));
     }
 }
