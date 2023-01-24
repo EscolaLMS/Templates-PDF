@@ -6,27 +6,46 @@ use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
+use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
 
 class ReportBroService implements ReportBroServiceContract
 {
 
-    private function generateFromPayload(string $payload): string
+
+    public function getKeyFromPayload(string $payload): string
     {
-        $reportBroUrl = config("reportbroUrl", "https://reportbro.stage.etd24.pl/reportbro/report/run");
+
+        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url', "https://reportbro.stage.etd24.pl/reportbro/report/run");
 
         $response = Http::withBody($payload, 'application/json')
             ->send('PUT', $reportBroUrl);
 
         $fullKey = $response->getBody()->getContents();
 
-        $keys = explode(":", $fullKey);
+        return $fullKey;
+    }
+
+    public function getFilepathFromKey(string $key): string
+    {
+        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url', "https://reportbro.stage.etd24.pl/reportbro/report/run");
         $tempName = tempnam(sys_get_temp_dir(), 'response') . '.pdf';
 
-        Http::sink($tempName)->get($reportBroUrl, ['key' => $keys[1], 'outputFormat' => 'pdf']);
+        Http::sink($tempName)->get($reportBroUrl, ['key' => $key, 'outputFormat' => 'pdf']);
 
         return $tempName;
     }
-    public function generateFileFromRecord(int $id): string
+
+    private function generateFromPayload(string $payload): string
+    {
+
+        $key = $this->getKeyFromPayload($payload);
+        $keys = explode(":", $fullKey);
+
+        $tempName = $this->getFilepathFromKey($keys[1]);
+
+        return $tempName;
+    }
+    public function generateFileFromRecord(int $id, $testData = true): string
     {
         $record = FabricPDF::findOrFail($id)->toArray();
 
@@ -37,7 +56,7 @@ class ReportBroService implements ReportBroServiceContract
         $payload = '
         { 
             "data": ' . json_encode($vars) . ',
-            "isTestData": false, 
+            "isTestData": ' . $testData ? "true" : "false" . ', 
             "outputFormat": "pdf",
             "report": ' . $record["content"] . '
         }';
@@ -47,6 +66,13 @@ class ReportBroService implements ReportBroServiceContract
 
     public function passAll(Request $request): string
     {
-        return $this->generateFromPayload($request->getContent());
+
+        switch ($request->method()) {
+            case "PUT":
+                return $this->getKeyFromPayload($request->getContent());
+            case "GET":
+            default:
+                return $this->getFilepathFromKey($request->get('key'));
+        }
     }
 }

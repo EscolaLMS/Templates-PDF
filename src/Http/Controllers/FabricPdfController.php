@@ -53,6 +53,13 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
     public function reportBro(Request $request): mixed
     {
         $service = App::make(ReportBroServiceContract::class);
-        return $service->passAll($request);
+        $response = $service->passAll($request);
+
+
+        if (strpos($response, "key") !== FALSE) {
+            return response($response, 200);
+        }
+
+        return response()->download($response);
     }
 }

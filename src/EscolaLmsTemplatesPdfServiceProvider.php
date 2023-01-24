@@ -8,6 +8,7 @@ use EscolaLms\TemplatesPdf\Providers\AuthServiceProvider;
 use EscolaLms\TemplatesPdf\Services\ReportBroService;
 use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
 use Illuminate\Support\ServiceProvider;
+use EscolaLms\Settings\Facades\AdministrableConfig;
 
 /**
  * SWAGGER_VERSION
@@ -40,6 +41,10 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
+        }
+
+        if (class_exists(\EscolaLms\Settings\Facades\AdministrableConfig::class)) {
+            AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'bool'], true);
         }
     }
 
