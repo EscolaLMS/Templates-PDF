@@ -38,7 +38,7 @@ class ReportBroService implements ReportBroServiceContract
     private function generateFromPayload(string $payload): string
     {
 
-        $key = $this->getKeyFromPayload($payload);
+        $fullKey = $this->getKeyFromPayload($payload);
         $keys = explode(":", $fullKey);
 
         $tempName = $this->getFilepathFromKey($keys[1]);
