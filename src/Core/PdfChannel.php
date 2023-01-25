@@ -12,16 +12,24 @@ use EscolaLms\Templates\Models\Template;
 use EscolaLms\Templates\Models\TemplateSection;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use Illuminate\Support\Collection;
+use EscolaLms\Templates\Facades\Template as TemplateFacade;
+use ReflectionClass;
+use ReflectionProperty;
 
 class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannelContract
 {
     public static function send(EventWrapper $event, array $sections): bool
     {
+
+        $varsService = TemplateFacade::getVariableClassName($event->eventClass(), PdfChannel::class);
+        $vars = $varsService::variablesFromEvent($event);
+
         FabricPDF::create([
             'user_id' => $event->user()->id,
             'template_id' => $sections['template_id'],
             'title' => $sections['title'],
             'content' => $sections['content'],
+            'vars' => $vars
         ]);
 
         return true;
