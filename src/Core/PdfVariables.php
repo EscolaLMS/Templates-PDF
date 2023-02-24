@@ -12,6 +12,7 @@ abstract class PdfVariables extends AbstractTemplateVariableClass implements Tem
     const VAR_APP_NAME       = '@VarAppName';
     const VAR_TODAY = '@VarToday';
     const VAR_COURSE_TITLE = '@VarCourseTitle';
+    const VAR_PRODUCT_TITLE = '@VarProductTitle';
 
     public static function mockedVariables(?User $user = null): array
     {
@@ -20,6 +21,7 @@ abstract class PdfVariables extends AbstractTemplateVariableClass implements Tem
             self::VAR_APP_NAME => config('app.name'),
             self::VAR_TODAY => today()->format('d.m.Y'),
             self::VAR_COURSE_TITLE => $faker->title,
+            self::VAR_PRODUCT_TITLE => $faker->title,
         ];
     }
 
@@ -29,6 +31,7 @@ abstract class PdfVariables extends AbstractTemplateVariableClass implements Tem
             self::VAR_APP_NAME => config('app.name'),
             self::VAR_TODAY => today()->format('d.m.Y'),
             self::VAR_COURSE_TITLE => $event->getCourse() ? $event->getCourse()->title : null,
+            self::VAR_PRODUCT_TITLE => $event->getProduct() ? $event->getProduct()->name : null,
         ];
     }
 
