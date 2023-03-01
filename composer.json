@@ -5,7 +5,7 @@
   "require": {
     "php": "^7.4|^8.0",
     "escolalms/core": "^1.2.2",
-    "escolalms/templates": "^0.2.35",
+    "escolalms/templates": "^0.2.36",
     "laravel/framework": "^8|^9"
   },
   "require-dev": {
