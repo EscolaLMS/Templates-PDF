@@ -48,22 +48,18 @@ class ReportBroService implements ReportBroServiceContract
     public function generateFileFromRecord(int $id, $testData = true): string
     {
         $record = FabricPDF::findOrFail($id)->toArray();
-        $vars = [];
 
-        if ($record['vars']) {
-            foreach ($record['vars'] as $key => $value) {
-                $vars[str_replace('@', '', $key)] = $value;
-            }
+        foreach ($record['vars'] as $key => $value) {
+            $vars[str_replace('@', '', $key)] = $value;
         }
 
         $payload = '
         { 
             "data": ' . json_encode($vars) . ',
-            "isTestData": ' . ($testData ? "true" : "false") . ', 
+            "isTestData": ' . $testData ? "true" : "false" . ', 
             "outputFormat": "pdf",
             "report": ' . $record["content"] . '
         }';
-
 
         return $this->generateFromPayload($payload);
     }

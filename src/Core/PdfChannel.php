@@ -5,6 +5,7 @@ namespace EscolaLms\TemplatesPdf\Core;
 use EscolaLms\Core\Models\User;
 use EscolaLms\Templates\Contracts\TemplateChannelContract;
 use EscolaLms\Templates\Core\AbstractTemplateChannelClass;
+use EscolaLms\Templates\Core\SettingsVariables;
 use EscolaLms\Templates\Core\TemplateSectionSchema;
 use EscolaLms\Templates\Enums\TemplateSectionTypeEnum;
 use EscolaLms\Templates\Events\EventWrapper;
@@ -22,7 +23,7 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
     {
 
         $varsService = TemplateFacade::getVariableClassName($event->eventClass(), PdfChannel::class);
-        $vars = $varsService::variablesFromEvent($event);
+        $vars = array_merge(SettingsVariables::getSettingsValues(), $varsService::variablesFromEvent($event));
 
         FabricPDF::create([
             'user_id' => $event->user()->id,

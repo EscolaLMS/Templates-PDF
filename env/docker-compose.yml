@@ -5,7 +5,7 @@ networks:
     driver: bridge
 services:
   escola_lms_app74:
-    image: escolalms/php:7.4
+    image: escolalms/php:8.2
     command: bash -c "php-fpm -F"
     volumes:
       - ./../:/var/www/html

@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\Lang;
 class UserVariables extends PdfVariables
 {
     const VAR_USER_NAME = '@VarUserName';
+    const VAR_COURSE_TITLE = '@VarCourseTitle';
+    const VAR_PRODUCT_TITLE = '@VarProductTitle';
 
     public static function mockedVariables(?User $user = null): array
     {
         $faker = \Faker\Factory::create();
         return array_merge(parent::mockedVariables(), [
             self::VAR_USER_NAME => $faker->name(),
+            self::VAR_COURSE_TITLE => $faker->title,
+            self::VAR_PRODUCT_TITLE => $faker->title,
         ]);
     }
 
@@ -22,6 +26,8 @@ class UserVariables extends PdfVariables
     {
         return array_merge(parent::variablesFromEvent($event), [
             self::VAR_USER_NAME => $event->user()->name,
+            self::VAR_COURSE_TITLE => $event->getCourse() ? $event->getCourse()->title : null,
+            self::VAR_PRODUCT_TITLE => $event->getProduct() ? $event->getProduct()->name : null,
         ]);
     }
 
