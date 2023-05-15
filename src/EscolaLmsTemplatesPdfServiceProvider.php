@@ -44,7 +44,7 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
         }
 
         if (class_exists(\EscolaLms\Settings\Facades\AdministrableConfig::class)) {
-            AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'bool'], true);
+            AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'string'], true);
         }
     }
 
