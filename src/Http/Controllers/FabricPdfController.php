@@ -35,7 +35,7 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
     public function generate(PdfReadRequest $request, int $id): BinaryFileResponse
     {
         $service = App::make(ReportBroServiceContract::class);
-        return response()->download($service->generateFileFromRecord($id));
+        return response()->download($service->generateFileFromRecord($id, false));
     }
 
     public function admin(PdfListingAdminRequest $request): JsonResponse
