@@ -54,7 +54,7 @@ class ReportBroService implements ReportBroServiceContract
         $payload = '
         { 
             "data": ' . json_encode($vars) . ',
-            "isTestData": ' . $testData ? "true" : "false" . ', 
+            "isTestData": ' . ($testData ? "true" : "false") . ', 
             "outputFormat": "pdf",
             "report": ' . $record["content"] . '
         }';
