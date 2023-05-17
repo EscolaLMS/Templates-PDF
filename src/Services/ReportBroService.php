@@ -10,12 +10,10 @@ use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
 
 class ReportBroService implements ReportBroServiceContract
 {
-
-
     public function getKeyFromPayload(string $payload): string
     {
 
-        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url', "https://pdfs.escolalms-api-stage.s.escolait.pl/reportbro/report/run");
+        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url');
 
         $response = Http::withBody($payload, 'application/json')
             ->send('PUT', $reportBroUrl);
@@ -27,7 +25,7 @@ class ReportBroService implements ReportBroServiceContract
 
     public function getFilepathFromKey(string $key): string
     {
-        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url', "https://pdfs.escolalms-api-stage.s.escolait.pl/reportbro/report/run");
+        $reportBroUrl = config(EscolaLmsTemplatesPdfServiceProvider::CONFIG_KEY . '.reportbro_url');
         $tempName = tempnam(sys_get_temp_dir(), 'response') . '.pdf';
 
         Http::sink($tempName)->get($reportBroUrl, ['key' => $key, 'outputFormat' => 'pdf']);
@@ -56,7 +54,7 @@ class ReportBroService implements ReportBroServiceContract
         $payload = '
         { 
             "data": ' . json_encode($vars) . ',
-            "isTestData": ' . ($testData ? "true" : "false") . ', 
+            "isTestData": ' . $testData ? "true" : "false" . ', 
             "outputFormat": "pdf",
             "report": ' . $record["content"] . '
         }';

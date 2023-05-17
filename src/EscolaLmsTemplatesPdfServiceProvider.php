@@ -32,6 +32,14 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
 
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(UserTemplateServiceProvider::class);
+
+        if (class_exists(\EscolaLms\Settings\Facades\AdministrableConfig::class)) {
+            $this->mergeConfigFrom(
+                __DIR__ . '/config.php',
+                self::CONFIG_KEY
+            );
+            AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'string'], true);
+        }
     }
 
     public function boot()
@@ -41,10 +49,6 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
-        }
-
-        if (class_exists(\EscolaLms\Settings\Facades\AdministrableConfig::class)) {
-            AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'string'], true);
         }
     }
 
