@@ -34,10 +34,6 @@ class EscolaLmsTemplatesPdfServiceProvider extends ServiceProvider
         $this->app->register(UserTemplateServiceProvider::class);
 
         if (class_exists(\EscolaLms\Settings\Facades\AdministrableConfig::class)) {
-            $this->mergeConfigFrom(
-                __DIR__ . '/config.php',
-                self::CONFIG_KEY
-            );
             AdministrableConfig::registerConfig(self::CONFIG_KEY . '.reportbro_url', ['required', 'string'], true);
         }
     }
