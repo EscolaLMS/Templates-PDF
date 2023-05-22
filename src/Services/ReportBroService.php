@@ -47,8 +47,10 @@ class ReportBroService implements ReportBroServiceContract
     {
         $record = FabricPDF::findOrFail($id)->toArray();
 
-        foreach ($record['vars'] as $key => $value) {
-            $vars[str_replace('@', '', $key)] = $value;
+        if (is_array($record['vars'])) {
+            foreach ($record['vars'] as $key => $value) {
+                $vars[str_replace('@', '', $key)] = $value;
+            }
         }
 
         $payload = '
