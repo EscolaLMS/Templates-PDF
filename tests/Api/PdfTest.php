@@ -25,7 +25,7 @@ class PdfTest extends TestCase
     {
         $pdf = FabricPDF::factory()->createOne(
             [
-                'user_id' => $this->user->id
+                'user_id' => $this->user->id,
             ]
         );
 
@@ -41,6 +41,7 @@ class PdfTest extends TestCase
                 'id',
                 'path',
                 'template',
+                'vars'
             ],
             'message'
         ]);
@@ -49,6 +50,39 @@ class PdfTest extends TestCase
             ->getJson('/api/pdfs/' . $pdf->id);
 
         $response->assertStatus(403);
+    }
+
+    public function testCanReadWithVars(): void
+    {
+        $pdf = FabricPDF::factory()->createOne(
+            [
+                'user_id' => $this->user->id,
+                'vars' => [
+                    '@GlobalSettingsValue' => 'value_1',
+                    '@VarExampleValue' => 'value_2'
+                ]
+            ]
+        );
+
+        $this->actingAs($this->user)
+            ->getJson('/api/pdfs/' . $pdf->id)
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'content',
+                    'created_at',
+                    'id',
+                    'path',
+                    'template',
+                    'vars'
+                ],
+                'message'
+            ])
+            ->assertJsonFragment([
+                'vars' => [
+                    'var_example_value' => 'value_2'
+                ]
+            ]);
     }
 
     public function testAdminCanReadAny(): void

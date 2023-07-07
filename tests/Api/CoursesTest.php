@@ -2,6 +2,8 @@
 
 namespace EscolaLms\TemplatesPdf\Tests\Api;
 
+use Carbon\Carbon;
+use EscolaLms\Categories\Models\Category;
 use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
@@ -56,7 +58,10 @@ class CoursesTest extends TestCase
             PdfCreated::class,
         ]);
 
-        $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED]);
+        $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED, 'active_from' => Carbon::now()]);
+        $course->categories()->attach(Category::factory()->create());
+        $course->categories()->attach(Category::factory()->create());
+
         $lesson = Lesson::factory([
             'course_id' => $course->getKey()
         ])->create();
