@@ -2,7 +2,6 @@
 
 namespace EscolaLms\TemplatesPdf\Tests\Api;
 
-use Carbon\Carbon;
 use EscolaLms\Categories\Models\Category;
 use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
@@ -26,6 +25,7 @@ use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
