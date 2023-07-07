@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TemplatesPdf\Tests\Api;
 
+use EscolaLms\Categories\Models\Category;
 use EscolaLms\Core\Models\User as CoreUser;
 use EscolaLms\Core\Tests\ApiTestTrait;
 use EscolaLms\Core\Tests\CreatesUsers;
@@ -24,6 +25,7 @@ use EscolaLms\TemplatesPdf\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Log\Events\MessageLogged;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -56,7 +58,10 @@ class CoursesTest extends TestCase
             PdfCreated::class,
         ]);
 
-        $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED]);
+        $course = Course::factory()->create(['status' => CourseStatusEnum::PUBLISHED, 'active_from' => Carbon::now()]);
+        $course->categories()->attach(Category::factory()->create());
+        $course->categories()->attach(Category::factory()->create());
+
         $lesson = Lesson::factory([
             'course_id' => $course->getKey()
         ])->create();

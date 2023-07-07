@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TemplatesPdf\Tests;
 
+use EscolaLms\Categories\EscolaLmsCategoriesServiceProvider;
 use EscolaLms\Core\Models\User;
 use EscolaLms\TemplatesPdf\EscolaLmsTemplatesPdfServiceProvider;
 use EscolaLms\Templates\Database\Seeders\PermissionTableSeeder as TemplatesPermissionTableSeeder;
@@ -32,6 +33,7 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
             PermissionServiceProvider::class,
             EscolaLmsCourseServiceProvider::class,
             EscolaLmsTemplatesServiceProvider::class,
+            EscolaLmsCategoriesServiceProvider::class,
             EscolaLmsTemplatesPdfServiceProvider::class,
         ];
     }
