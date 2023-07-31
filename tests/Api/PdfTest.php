@@ -123,7 +123,36 @@ class PdfTest extends TestCase
         $this->assertEquals($pdf->id, $seek->id);
     }
 
-    public function testListAdmin(): void
+    public function testListPdfsPagination(): void
+    {
+        FabricPDF::factory()
+            ->state([
+                'user_id' => $this->user->id,
+            ])
+            ->count(35)
+            ->create();
+
+        $this->actingAs($this->user, 'api')
+            ->getJson('api/pdfs?per_page=10')
+            ->assertOk()
+            ->assertJsonCount(10, 'data')
+            ->assertJson([
+                'meta' => [
+                    'total' => 35
+                ]
+            ]);
+
+        $this->actingAs($this->user, 'api')
+            ->getJson('api/pdfs?per_page=10&page=4')
+            ->assertOk()
+            ->assertJsonCount(5, 'data')
+            ->assertJson([
+                'meta' => [
+                    'total' => 35
+                ]
+            ]);
+    }
+        public function testListAdmin(): void
     {
         $pdf = FabricPDF::factory()->createOne(
             [
