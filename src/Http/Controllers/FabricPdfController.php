@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\App;
 use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-
-
 class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfControllerSwagger
 {
     public function index(PdfListingRequest $request): JsonResponse
     {
-        $pdfs = FabricPDF::where('user_id', auth()->user()->id)->paginate();
+        $pdfs = FabricPDF::where('user_id', auth()->user()->id)
+            ->paginate($request->get('per_page') ?? 15);
+
         return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
     }
 
@@ -45,7 +45,7 @@ class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfC
         } else if ($request->has('template_id')) {
             $pdfs = FabricPDF::where('template_id', $request->input('template_id'))->get();
         } else {
-            $pdfs = FabricPDF::paginate();
+            $pdfs = FabricPDF::paginate($request->get('per_page') ?? 15);
         }
         return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
     }
