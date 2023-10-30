@@ -27,7 +27,7 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
 
     protected function getPackageProviders($app): array
     {
-        return [
+        $providers = [
             ...parent::getPackageProviders($app),
             PassportServiceProvider::class,
             PermissionServiceProvider::class,
@@ -36,6 +36,12 @@ class TestCase extends \EscolaLms\Core\Tests\TestCase
             EscolaLmsCategoriesServiceProvider::class,
             EscolaLmsTemplatesPdfServiceProvider::class,
         ];
+
+        if (class_exists(\EscolaLms\Auth\EscolaLmsAuthServiceProvider::class)) {
+            $providers[] = \EscolaLms\Auth\EscolaLmsAuthServiceProvider::class;
+        }
+
+        return $providers;
     }
 
     protected function getEnvironmentSetUp($app)
