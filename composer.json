@@ -3,10 +3,10 @@
   "description": "Escola Headless LMS Templates for pdf",
   "type": "package",
   "require": {
-    "php": "^7.4|^8.0",
+    "php": ">=7.4",
     "escolalms/core": "^1.2.2",
     "escolalms/templates": "^0.2.36",
-    "laravel/framework": "^8|^9"
+    "laravel/framework": ">=8.0"
   },
   "require-dev": {
     "escolalms/auth": "^0.1.54",
