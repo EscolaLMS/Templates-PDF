@@ -110,6 +110,8 @@ class CoursesTest extends TestCase
         $section = $template->sections->where('key', 'title')->first();
 
         $this->assertEquals(str_replace(UserFinishedCourseVariables::VAR_COURSE_TITLE, $course->title, $section->content), $pdf->title);
+        $this->assertEquals('1', $pdf->vars[UserFinishedCourseVariables::VAR_CONTINUOUS_CERT_NUMBER]);
+        $this->assertEquals('1/' . now()->year, $pdf->vars[UserFinishedCourseVariables::VAR_ANNUAL_CERT_NUMBER]);
     }
 
     public function testUserFinishedCoursePDFfromReportBro(): void
