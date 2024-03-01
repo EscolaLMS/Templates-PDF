@@ -6,6 +6,7 @@ use EscolaLms\Core\Models\User;
 use EscolaLms\Courses\Models\Course;
 use EscolaLms\Templates\Events\EventWrapper;
 use EscolaLms\TemplatesPdf\Core\PdfVariables;
+use EscolaLms\TemplatesPdf\Models\FabricPDF;
 use Illuminate\Support\Carbon;
 
 abstract class CommonUserAndCourseVariables extends PdfVariables
@@ -19,6 +20,8 @@ abstract class CommonUserAndCourseVariables extends PdfVariables
     const VAR_COURSE_CATEGORIES_WITH_BREADCRUMBS    = '@VarCourseCategoriesWithBreadcrumbs';
     const VAR_CATEGORIES_ID                         = '@VarCategoriesId';
     const VAR_COURSE_ID                             = '@VarCourseId';
+    const VAR_CONTINUOUS_CERT_NUMBER                = '@VarContinuousCertNumber';
+    const VAR_ANNUAL_CERT_NUMBER                    = '@VarAnnualCertNumber';
 
     public static function mockedVariables(?User $user = null): array
     {
@@ -33,6 +36,8 @@ abstract class CommonUserAndCourseVariables extends PdfVariables
             self::VAR_COURSE_CATEGORIES_WITH_BREADCRUMBS    => $faker->word(),
             self::VAR_CATEGORIES_ID                         => $faker->numberBetween(1),
             self::VAR_COURSE_ID                             => $faker->numberBetween(1),
+            self::VAR_CONTINUOUS_CERT_NUMBER                => $faker->numberBetween(1),
+            self::VAR_ANNUAL_CERT_NUMBER                    => $faker->numberBetween(1) . '/' . now()->year,
         ]);
     }
 
@@ -47,7 +52,9 @@ abstract class CommonUserAndCourseVariables extends PdfVariables
             self::VAR_COURSE_CATEGORIES                     => $event->getCourse()->categories->pluck('name')->implode(', '),
             self::VAR_COURSE_CATEGORIES_WITH_BREADCRUMBS    => $event->getCourse()->categories->pluck('name_with_breadcrumbs')->implode(', '),
             self::VAR_CATEGORIES_ID                         => $event->getCourse()->categories->pluck('id')->implode(', '),
-            self::VAR_COURSE_ID                             => $event->getCourse()->id,
+            self::VAR_COURSE_ID                             => (string) $event->getCourse()->id,
+            self::VAR_CONTINUOUS_CERT_NUMBER                => (string) (FabricPDF::count() + 1),
+            self::VAR_ANNUAL_CERT_NUMBER                    => FabricPDF::whereYear('created_at', now()->year)->count() + 1 . '/' . now()->year,
         ]);
     }
 
