@@ -33,6 +33,24 @@
                             "type": "number",
                             "default": 15
                         }
+                    },
+                    {
+                        "name": "assignable_type",
+                        "in": "query",
+                        "description": "Assignable type (EscolaLms\\Courses\\Models\\Course)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "assignable_id",
+                        "in": "query",
+                        "description": "Assignable ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -208,6 +226,12 @@
                     "path": {
                         "description": "path to rendered PDF binary file",
                         "type": "string"
+                    },
+                    "assignable_type": {
+                        "type": "string"
+                    },
+                    "assignable_id": {
+                        "type": "integer"
                     }
                 },
                 "type": "object"
