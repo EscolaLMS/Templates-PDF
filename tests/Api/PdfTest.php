@@ -123,6 +123,39 @@ class PdfTest extends TestCase
         $this->assertEquals($pdf->id, $seek->id);
     }
 
+
+    public function testListExistingAssignable(): void
+    {
+        $pdf1 = FabricPDF::factory()->createOne(
+            [
+                'user_id' => $this->user->id,
+                'assignable_type' => 'EscolaLms\Test\Models\Test',
+                'assignable_id' => '1'
+            ]
+        );
+        $pdf2 = FabricPDF::factory()->createOne(
+            [
+                'user_id' => $this->user->id,
+            ]
+        );
+
+        $response =  $this->actingAs($this->user)
+            ->getJson('/api/pdfs?assignable_type=EscolaLms\Test\Models\Test&assignable_id=1');
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+
+        $seek = false;
+
+        foreach ($response->getData()->data as $item) {
+            if ($item->id == $pdf1->id) {
+                $seek = $pdf1;
+            }
+        }
+
+        $this->assertEquals($pdf1->id, $seek->id);
+    }
+
     public function testListPdfsPagination(): void
     {
         FabricPDF::factory()
