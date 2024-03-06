@@ -21,7 +21,6 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
 {
     public static function send(EventWrapper $event, array $sections): bool
     {
-
         $varsService = TemplateFacade::getVariableClassName($event->eventClass(), PdfChannel::class);
         $vars = array_merge(SettingsVariables::getSettingsValues(), $varsService::variablesFromEvent($event));
 
@@ -30,7 +29,9 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
             'template_id' => $sections['template_id'],
             'title' => $sections['title'],
             'content' => $sections['content'],
-            'vars' => $vars
+            'vars' => $vars,
+            'assignable_type' => $varsService::assignableClass(),
+            'assignable_id' => $varsService::assignableClass() ? $event->extractIdForPropertyOfClass($varsService::assignableClass()) : null,
         ]);
 
         return true;

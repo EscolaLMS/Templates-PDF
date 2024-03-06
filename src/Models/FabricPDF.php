@@ -35,6 +35,14 @@ use EscolaLms\TemplatesPdf\Events\PdfCreated;
  *          description="path to rendered PDF binary file",
  *          type="string",
  *      ),
+ *       @OA\Property(
+ *           property="assignable_type",
+ *           type="string",
+ *       ),
+ *      @OA\Property(
+ *           property="assignable_id",
+ *           type="integer",
+ *       ),
  * )
  */
 class FabricPDF extends Model

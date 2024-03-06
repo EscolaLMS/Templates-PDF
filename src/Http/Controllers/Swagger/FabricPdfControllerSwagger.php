@@ -41,6 +41,24 @@ interface FabricPdfControllerSwagger
      *               default=15,
      *          ),
      *      ),
+     *      @OA\Parameter(
+     *           name="assignable_type",
+     *           description="Assignable type (EscolaLms\Courses\Models\Course)",
+     *           required=false,
+     *           in="query",
+     *           @OA\Schema(
+     *               type="string"
+     *           )
+     *      ),
+     *      @OA\Parameter(
+     *            name="assignable_id",
+     *            description="Assignable ID",
+     *            required=false,
+     *            in="query",
+     *            @OA\Schema(
+     *                type="integer"
+     *            )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="successful operation",

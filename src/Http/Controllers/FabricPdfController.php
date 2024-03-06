@@ -10,17 +10,24 @@ use EscolaLms\TemplatesPdf\Http\Requests\PdfReadRequest;
 use EscolaLms\TemplatesPdf\Http\Resources\PdfListResource;
 use EscolaLms\TemplatesPdf\Http\Resources\PdfResource;
 use EscolaLms\TemplatesPdf\Models\FabricPDF;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use EscolaLms\TemplatesPdf\Services\Contracts\ReportBroServiceContract;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class FabricPdfController extends EscolaLmsBaseController  implements FabricPdfControllerSwagger
+class FabricPdfController extends EscolaLmsBaseController implements FabricPdfControllerSwagger
 {
     public function index(PdfListingRequest $request): JsonResponse
     {
-        $pdfs = FabricPDF::where('user_id', auth()->user()->id)
+        $pdfs = FabricPDF::query()
+            ->where('user_id', auth()->user()->id)
+            ->when($request->has('assignable_type') && $request->has('assignable_id'),
+                fn(Builder $query) => $query
+                    ->where('assignable_type', $request->get('assignable_type'))
+                    ->where('assignable_id', $request->get('assignable_id'))
+            )
             ->paginate($request->get('per_page') ?? 15);
 
         return $this->sendResponseForResource(PdfListResource::collection($pdfs), "pdfs list retrieved successfully");
