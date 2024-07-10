@@ -237,5 +237,15 @@
                 "type": "object"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Template PDFs",
+            "description": "Template PDFs"
+        },
+        {
+            "name": "Admin Template PDFs",
+            "description": "Admin Template PDFs"
+        }
+    ]
 }
