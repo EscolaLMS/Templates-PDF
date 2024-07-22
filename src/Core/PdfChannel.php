@@ -45,7 +45,9 @@ class PdfChannel extends AbstractTemplateChannelClass implements TemplateChannel
     public static function sections(): Collection
     {
         return new Collection([
+            // @phstan-ignore-next-line
             new TemplateSectionSchema('title', TemplateSectionTypeEnum::SECTION_TEXT(), true),
+            // @phstan-ignore-next-line
             new TemplateSectionSchema('content', TemplateSectionTypeEnum::SECTION_FABRIC(), true),
         ]);
     }
