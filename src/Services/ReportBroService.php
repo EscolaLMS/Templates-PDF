@@ -47,6 +47,7 @@ class ReportBroService implements ReportBroServiceContract
     {
         $record = FabricPDF::findOrFail($id)->toArray();
 
+        $vars = [];
         if (is_array($record['vars'])) {
             foreach ($record['vars'] as $key => $value) {
                 $vars[str_replace('@', '', $key)] = $value;
@@ -54,9 +55,9 @@ class ReportBroService implements ReportBroServiceContract
         }
 
         $payload = '
-        { 
+        {
             "data": ' . json_encode($vars) . ',
-            "isTestData": ' . ($testData ? "true" : "false") . ', 
+            "isTestData": ' . ($testData ? "true" : "false") . ',
             "outputFormat": "pdf",
             "report": ' . $record["content"] . '
         }';
