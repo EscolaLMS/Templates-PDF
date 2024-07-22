@@ -10,7 +10,7 @@
   },
   "require-dev": {
     "escolalms/auth": "^0.2",
-    "escolalms/courses": "^0,4",
+    "escolalms/courses": "^0.4",
     "escolalms/cart": "^0",
     "escolalms/settings": "^0.1.2",
     "escolalms/topic-types": "^0.2.5",
